@@ -11,9 +11,9 @@ $mostrar_error = true;
 $programa_correo = mailPHP;
 if ($_SERVER['SERVER_NAME'] == "condominiosmargarita.com.ve" | $_SERVER['SERVER_NAME'] == "www.condominiosmargarita.com.ve") {
     
-    $user = "condominiosmarga";
-    $password = "margarita5231";
-    $db = "valoriza2_condominiosmargarita";
+    $user = "";
+    $password = "";
+    $db = "";
     $email_error = true;
     $mostrar_error = true;
     $debug = true;
@@ -22,7 +22,7 @@ if ($_SERVER['SERVER_NAME'] == "condominiosmargarita.com.ve" | $_SERVER['SERVER_
 } else {
     $user = "root";
     $password = "";
-    $db = "grupvenc_valoriza2";
+    $db = "";
 }
 
 define("HOST", "localhost");
@@ -59,8 +59,8 @@ define("ARCHIVO_ACTUALIZACION","ACTUALIZACION.txt");
 define("ARCHIVO_MOVIMIENTO_CAJA","MOVIMIENTO_CAJA.txt");
 define("SMTP_SERVER","mail.condominiosmargarita.com.ve");                                 
 define("PORT",25);
-define("USER_MAIL","no_reply@condominiosmargarita.com.ve");
-define("PASS_MAIL","margarita5231");
+define("USER_MAIL","");
+define("PASS_MAIL","");
 define("MESES_COBRANZA",1000);
 define("GRAFICO_FACTURACION",1);
 define("GRAFICO_COBRANZA",1);
