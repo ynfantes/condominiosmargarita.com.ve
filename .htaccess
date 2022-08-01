@@ -3,11 +3,10 @@ AddCharset utf-8 .html
 Options +FollowSymLinks
 RewriteEngine on
 
-RewriteCond %{HTTPS} on
-RewriteRule ^(.*)$ http://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTP_HOST} ^condominiosmargarita.com.ve
+RewriteRule (.*) http://www.condominiosmargarita.com.ve/$1 [R=301,L]
 
 Rewriterule ^enlinea/([A-Za-z\-]+)/([A-Za-z\-]+)$ enlinea/$1/index.php?accion=$2 [L]
-#Rewriterule ^enlinea/([A-Za-z\-]+)/([A-Za-z\-]+)/([0-9]{1,5})$ enlinea/$1/index.php?accion=$2&id=$3 [L]
 Rewriterule ^enlinea/([A-Za-z\-]+)/([A-Za-z\-]+)/([0-9A-Za-z\-\_\.]+)$ enlinea/$1/index.php?accion=$2&id=$3 [L]
 Rewriterule ^enlinea/([A-Za-z\-]+)/([A-Za-z\-]+)/pagina/([0-9]+)$ enlinea/$1/index.php?accion=$2&pagina=$3 [L]
 Rewriterule ^intranet/([A-Za-z\-]+)/([A-Za-z\-]+)$ intranet/$1/index.php?accion=$2 [L]
