@@ -1,0 +1,163 @@
+<div class="row">
+<!-- col -->
+<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+<h1 class="page-title txt-color-blue">
+<!-- PAGE HEADER -->
+<i class="fa-fw fa fa-list-alt"></i> 
+Estado de Cuenta 
+</h1>
+</div>
+<!-- end col -->
+
+<!-- right side of the page with the sparkline graphs -->
+<!-- col -->
+<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+<!-- sparks -->
+<ul id="sparks">
+<li class="sparks-info">
+<h5> Deuda Inmueble
+<span class="txt-color-greenDark" id="deuda" data-original="Deuda dondominio" data-placement="left" rel="tooltip">
+<i class="fa fa-money"></i> {{format_number(inmuebles[0].deuda)}}
+</span>
+</h5>
+</li>
+<li class="sparks-info">
+<h5> Prom. Facturacion <span class="txt-color-{% if direccion_facturacion == "up" %}blue{% else %}red{% endif %}"><i class="fa fa-arrow-circle-{{ direccion_facturacion }}" data-rel="bootstrap-tooltip" title="Increased"></i>&nbsp;{{ promedio_facturacion }}</span></h5>
+<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
+{{ movimiento_facturacion }}
+</div>
+</li>
+<li class="sparks-info">
+<h5> Prom. Cobranza <span class="txt-color-{% if direccion_facturacion == "up" %}blue{% else %}red{% endif %}"><i class="fa fa-arrow-circle-{{ direccion_cobranza }}"></i>&nbsp;{{ promedio_cobranza }}</span></h5>
+<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
+    {{ movimiento_cobranza }}
+</div>
+</li>   
+</ul>
+<!-- end sparks -->
+</div>
+<!-- end col -->	
+</div>
+<section id="widget-grid" class="">
+<div class="row">
+{% for propiedad in propiedades %}
+{% if propiedad.meses_pendiente > constant('MESES_COBRANZA') %}
+<div class="col-sm-12">
+{% include 'misc/legal.html.twig' %}
+</div>
+{% endif %}
+{% endfor %}
+<div class="col-sm-12">
+<div class="alert alert-info alert-block">
+<a href="#" data-dismiss="alert" class="close">×</a>
+<h4 class="alert-heading">Importante!</h4>
+La información que encuentra en este sitio web,{{ f }} fue actualizada el <strong>{{ actualizacion }}</strong>. 
+</div>
+<div class="row">
+<form  name="cobranza">
+<div class="col-sm-6">
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon"><i class="fa fa-building fa-lg fa-fw"></i></span>
+<select class="form-control input-lg" name="inmueble">
+{% for inmueble in inmuebles %}
+    <option data="{{format_number(inmueble.deuda)}}" value="{{inmueble.id}}" {% if inmueble.id == id_inmueble %} selected="selected" {% endif %}>{{inmueble.nombre_inmueble}}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+</div>
+<!--div class="col-sm-2">
+<div class="form-group">
+<div class="input-group">
+<button class="btn btn-primary" name="consultar" ><i class="fa fa-check"></i> Consultar&nbsp;&nbsp;</button>
+</div>
+</div>
+</div-->
+{% if not cuenta is empty %}
+<div class="col-sm-2">
+<div class="form-group">
+<div class="input-group">
+    <a target="_blank" href="#" name="exportarPDF" class="btn btn-primary" id="{{id_inmueble}}"><i class="fa fa-file-pdf-o"></i> Exportar PDF</a>
+</div>
+</div>
+</div> 
+{% endif %}
+</form>
+</div>
+</div>
+<div class="col-sm-12 col-lg-8 col-md-12">
+<table  class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th style="text-align: center">Apartamento</th>
+<!--th style="text-align: center" class="hidden-xs">Propietario</th-->
+<th style="text-align: center">Nº Recibos</th>
+<th style="text-align: center">Deuda</th>
+</tr>
+</thead>
+<tbody>
+{% if cuenta is empty %}
+<tr><td colspan="4"><div class="alert alert-error">
+        <strong>Atención!</strong> No se puede cargar esta información.</div></td></tr>
+{% else %}
+{% set total = 0 %}
+{% set n = 0 %}
+{% for detalle in cuenta %}
+    {% set total = total + detalle.deuda %}
+    {% set n = n + 1 %}
+    <tr>
+        <td style="text-align: center">{{ detalle.apto }}</td>
+        <!--td class="hidden-xs">{{ detalle.propietario }}</td-->
+        <td style="text-align: center;">{{ detalle.recibos }}</td>
+        <td><span class="pull-right">{{ format_number(detalle.deuda) }}</span></td>
+    </tr>
+{% endfor %}
+    <tr>
+        <td><strong>Totales</strong>    </td>
+        <!--td class="hidden-xs">&nbsp;</td-->
+        <td style="text-align: center"><strong>{{ n }}</strong></td>
+        <td><span class="pull-right"><strong>{{ format_number(total) }}</strong></span></td>
+    </tr>
+{% endif %}
+</tbody>
+</table>
+</div>           
+<div class="col-sm-12">
+
+<div class="alert alert-success alert-block">
+<a href="#" data-dismiss="alert" class="close">×</a>
+<h4 class="alert-heading">Soporte</h4>
+Escríbanos a <strong>info@grupoinmobiliariotierradelsol.com</strong> si tiene algún inconveniente con esta página. Ayúdemos a brindarle el servicio que usted se merece. 
+</div>
+
+</div>
+</div>
+</section>
+<script type="text/javascript">
+	
+	pageSetUp();
+	
+	var pagefunction = function() {
+            $("a[name|='exportarPDF']").click(function() {
+                window.open('{{constant('ROOT')}}php/generarEstadoDeCuentaPDF.php?inmueble='+$(this).attr('id'));
+                return false;
+            });
+            $("select[name|='inmueble']").change(function() {
+                var url = "{{constant('URL_INTRANET')}}/inmueble/?accion=cuenta";
+                var data = $("form[name|='cobranza']").serialize();
+                enviarFormulario(data, url);
+                return false;
+            });
+            $("button[name|='consultar']").click(function() {
+                var url = "{{constant('URL_INTRANET')}}/inmueble/?accion=cuenta";
+                var data = $("form[name|='cobranza']").serialize();
+                enviarFormulario(data, url);
+                return false; // Evitar ejecutar el submit del formulario.
+            });
+            $("span#deuda").html("<i class=\"fa fa-money\"></i> {{ format_number(total) }}");
+	};
+	
+	pagefunction();
+	
+</script>

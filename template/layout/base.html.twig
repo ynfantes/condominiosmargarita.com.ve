@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<!--[if IE 8]>			<html class="ie ie8"> <![endif]-->
+<!--[if IE 9]>			<html class="ie ie9"> <![endif]-->
+<!--[if gt IE 9]><!-->	<html> <!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+<title>{% block titulo %}{% endblock %} | {{ constant('TITULO')}}</title>
+{% block seo %}
+<meta name="keywords" content="Grupo Veneto,  compra inmuebles, alquiler de inmuebles, administración de condominio, compra y venta inmuebles, Inmobiliaria Veneto " />
+<meta name="description" content="Grupo Veneto, desde 1960 dedicados al ramo inmobiliario. Talento y Experiencia como garantía de su inversión. " />
+{% endblock %}
+<meta name="Author" content="Edgar Messia (pronet21.com.ve)" />
+<!-- mobile settings -->
+<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+<meta name="google-site-verification" content="hO2yTy6JUlk-S5gVt7LwFdX0PNhdmDiSVDmQg6UE4hU" />
+<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+{% block head %}
+<!-- WEB FONTS : use %7C instead of | (pipe) -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400%7CRaleway:300,400,500,600,700%7CLato:300,400,400italic,600,700" rel="stylesheet" type="text/css" />
+
+<!-- CORE CSS -->
+<link href="{{constant('ROOT')}}assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+<!-- REVOLUTION SLIDER -->
+<link href="{{constant('ROOT')}}assets/plugins/slider.revolution/css/extralayers.css" rel="stylesheet" type="text/css" />
+<link href="{{constant('ROOT')}}assets/plugins/slider.revolution/css/settings.min.css" rel="stylesheet" type="text/css" />
+
+<!-- THEME CSS -->
+<link href="{{constant('ROOT')}}assets/css/essentials.min.css" rel="stylesheet" type="text/css" />
+<link href="{{constant('ROOT')}}assets/css/layout.min.css" rel="stylesheet" type="text/css" />
+<link href="{{constant('ROOT')}}assets/css/thematics-education.css" rel="stylesheet" type="text/css" />
+
+<!-- PAGE LEVEL SCRIPTS -->
+<link href="{{constant('ROOT')}}assets/css/header-1.css" rel="stylesheet" type="text/css" />
+<link href="{{constant('ROOT')}}assets/css/color_scheme/blue.min.css" rel="stylesheet" type="text/css" id="color_scheme" />
+
+
+<link rel="shortcut icon" href="{{constant('ROOT')}}assets/images/favicon/favicon.png">
+{% endblock %}
+<style>
+  .games-id__month {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    padding-bottom: 8px;
+} 
+.games-id__date, .games-id__month {
+    color: #1d1d1d;
+    display: block;
+    line-height: 1;
+}
+.games-id__date {
+    font-size: 30px;
+    font-weight: 400;
+}
+.cp-games-id__right {
+    text-transform: uppercase;
+    text-align: right;
+}
+.games-id__to {
+    font-size: 14px;
+    font-weight: bold;
+}
+.games-id__title {
+    color: #737373;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+}
+</style>
+</head>
+
+<!--
+AVAILABLE BODY CLASSES:
+
+smoothscroll 			= create a browser smooth scroll
+enable-animation		= enable WOW animations
+
+bg-grey					= grey background
+grain-grey				= grey grain background
+grain-blue				= blue grain background
+grain-green				= green grain background
+grain-blue				= blue grain background
+grain-orange			= orange grain background
+grain-yellow			= yellow grain background
+
+boxed 					= boxed layout
+pattern1 ... patern11	= pattern background
+menu-vertical-hide		= hidden, open on click
+
+BACKGROUND IMAGE [together with .boxed class]
+data-background="assets/images/boxed_background/1.jpg"
+-->
+<body class="smoothscroll enable-animation">
+{% block slidetop %}
+<!-- SLIDE TOP -->
+<div id="slidetop">
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-md-4">
+<h6><i class="icon-heart"></i> PORQUÉ GRUPO VENETO?</h6>
+<p>Porque poseemos la experiencia, el talento y el conocimiento en él área inmobiliaria. Trabajamos con mística y disciplina para ofrecer nuestros servicios en la compra, venta y alquiler de inmuebles, administración de condominios, asesoría y negocios en el área inmobiliaria. </p>
+</div>
+
+<div class="col-md-4">
+<h6><i class="icon-briefcase"></i> NUESTOS SERVICIOS</h6>
+<p>Compra, venta y alquiler de inmuebles, administración de condominios, alquiler y administración de inmuebles y negocios, asesoría inmobiliaria, gestiones de cobranzas, cobro a morosos. Inmobiliaria, administradora de condominios. Grupo Veneto</p>
+</div>
+
+<div class="col-md-4">
+<h6><i class="icon-envelope"></i> INFORMACIÓN DE CONTACTO</h6>
+<ul class="list-unstyled">
+<li><b>Dirección:</b> Av. Los Leones, Centro Comerial París <br /> Barquisimeto, Estado Lara</li>
+<li><b>Master:</b> (0251)253 0810</li>
+<li><b>Celular:</b> (0414)350 4471</li>
+<li><b>Email:</b> info@grupoveneto.com</li>
+</ul>
+</div>
+
+</div>
+
+</div>
+
+<a class="slidetop-toggle" href="#"><!-- toggle button --></a>
+
+</div>
+<!-- /SLIDE TOP -->
+{% endblock %}
+
+<!-- wrapper -->
+<div id="wrapper">
+{% block topvar %}
+{% include 'misc/topvar.html.twig' %}
+{% endblock %}
+
+<!-- 
+AVAILABLE HEADER CLASSES
+
+Default nav height: 96px
+.header-md 		= 70px nav height
+.header-sm 		= 60px nav height
+
+.noborder 		= remove bottom border (only with transparent use)
+.transparent	= transparent header
+.translucent	= translucent header
+.sticky			= sticky header
+.static			= static header
+.dark			= dark header
+.bottom			= header on bottom
+
+shadow-before-1 = shadow 1 header top
+shadow-after-1 	= shadow 1 header bottom
+shadow-before-2 = shadow 2 header top
+shadow-after-2 	= shadow 2 header bottom
+shadow-before-3 = shadow 3 header top
+shadow-after-3 	= shadow 3 header bottom
+
+.clearfix		= required for mobile menu, do not remove!
+
+Example Usage:  class="clearfix sticky header-sm transparent noborder"
+-->
+<div id="header" class="sticky clearfix">
+{% block topnav %}
+{% include 'misc/topnav.html.twig' %}
+{% endblock %}
+</div>
+
+
+{% block contenido %}
+<!-- REVOLUTION SLIDER -->
+<div class="slider fullwidthbanner-container roundedcorners" id="slider">
+<!--
+Navigation Styles:
+
+data-navigationStyle="" theme default navigation
+
+data-navigationStyle="preview1"
+data-navigationStyle="preview2"
+data-navigationStyle="preview3"
+data-navigationStyle="preview4"
+
+Bottom Shadows
+data-shadow="1"
+data-shadow="2"
+data-shadow="3"
+
+Slider Height (do not use on fullscreen mode)
+data-height="300"
+data-height="350"
+data-height="400"
+data-height="450"
+data-height="500"
+data-height="550"
+data-height="600"
+data-height="650"
+data-height="700"
+data-height="750"
+data-height="800"
+-->
+<div class="fullwidthbanner" data-height="600" data-shadow="0" data-navigationStyle="preview2">
+<ul class="hide">
+<!-- SLIDE  -->
+<li data-transition="parallaxtobottom" data-slotamount="10" data-masterspeed="600"  data-saveperformance="off"  data-title="Rio 2016">
+<!-- MAIN IMAGE -->
+
+<div class="tp-caption white_big skewfromleft tp-resizeme"
+data-x="100"
+data-y="60" 
+data-speed="400"
+data-start="1500"
+data-easing="Power3.easeInOut"
+data-splitin="none"
+data-splitout="none"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="600"
+style="z-index: 4; color:#28364F; font-size:30px; line-height:85px; font-weight:bold; letter-spacing:0; text-shadow:none;">
+Somos parte de tu vida, síguenos....
+</div>
+<div class="tp-caption tp-fade"
+data-x="260"
+data-y="160" 
+data-speed="300"
+data-start="800"
+data-easing="Power3.easeInOut"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="300"
+style="z-index: 4;">
+<img src="assets/images/condominio/redes_sociales.png" alt="">
+</div>
+
+<div class="tp-caption tp-fade"
+data-x="640"
+data-y="160" 
+data-speed="300"
+data-start="1000"
+data-easing="Power3.easeInOut"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="600"
+style="z-index: 4; color:#303876; font-size:24px; line-height:28px; font-weight:bold; letter-spacing:0; text-shadow:none;">
+#comprarcasa<br />
+#vendercasa<br />
+#alquilarcasa<br/>
+#condominio<br />
+#negocios<br/>
+#inmobiliaria<br>
+#bienesraices<br />
+#tuasesorinmobiliario<br/>
+#negocios<br />
+#amomicondominio<br />
+</div>
+
+<div class="tp-caption skewfromrightshort tp-resizeme"
+data-x="640"
+data-y="440" 
+data-speed="500"
+data-start="2000"
+data-easing="easeInCirc"
+data-splitin="none"
+data-splitout="none"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="500"
+style="z-index: 3;">
+<img src="assets/images/condominio/like.jpg" alt="">
+</div>
+</li>
+<!-- SLIDE  -->
+<li data-transition="parallaxtobottom" data-slotamount="7" data-masterspeed="600"  data-saveperformance="off"  data-title="Condominio">
+<!-- MAIN IMAGE -->
+<img src="assets/images/condominio/lightblue-min.jpg"  alt="cover image"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+
+<div class="tp-caption white_big skewfromleft tp-resizeme"
+data-x="650"
+data-y="100" 
+data-speed="400"
+data-start="1500"
+data-easing="Power3.easeInOut"
+data-splitin="none"
+data-splitout="none"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="600"
+style="z-index: 2; color:#fff; font-size:65px; line-height:85px; font-weight:bold; letter-spacing:0; text-shadow:none;">
+Administración<br />
+de Condominios
+</div>
+
+<div class="tp-caption content_text_center skewfromleft tp-resizeme"
+data-x="650"
+data-y="300" 
+data-speed="500"
+data-start="2000"
+data-easing="Power3.easeInOut"
+data-splitin="none"
+data-splitout="none"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="600"
+style="z-index: 3; font-size:20px; color:#fff; font-weight:300; text-shadow:none;">
+Desde 1960 brindando el servicio inmobiliario <br />
+que usted se merece. Invierta seguro
+</div>
+
+<div class="tp-caption tp-fade"
+data-x="left"
+data-y="25" 
+data-speed="300"
+data-start="800"
+data-easing="Power3.easeInOut"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="300"
+style="z-index: 4;">
+<img src="assets/images/condominio/administradora.png" alt="">
+</div>
+
+<div class="tp-caption skewfromleft tp-resizeme  un-button-2-lg"
+data-x="650"
+data-y="410" 
+data-speed="300"
+data-start="2500"
+data-easing="Power3.easeInOut"
+data-splitin="none"
+data-splitout="none"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="300"
+
+style="z-index: 5; max-width: auto; max-height: auto; white-space: nowrap;">
+    <a class="btn btn-3d btn-danger btn-lg" href="{{constant('ROOT')}}condominio-en-linea">PAGUE SU CONDOMINIO AQUÍ</a>
+</div>
+</li>
+
+<!-- SLIDE  -->
+<li data-transition="parallaxtotop" data-slotamount="7" data-masterspeed="300"  data-saveperformance="off" data-title="Inmobiliaria">
+<!-- MAIN IMAGE -->
+<img src="assets/images/demo/wall2.jpg" alt="cover image"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+
+<div class="tp-caption font-roboto skewfromleft tp-resizeme"
+data-x="50"
+data-y="100" 
+data-speed="500"
+data-start="1500"
+data-easing="Cubic.easeOut"
+data-splitin="none"
+data-splitout="none"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="500"
+style="z-index: 2; color:#333; font-size:65px; line-height:85px; font-weight:bold; letter-spacing:0; text-shadow:none;">
+Servicios<br>Inmobiliarios
+</div>
+
+<div class="tp-caption skewfromrightshort tp-resizeme"
+data-x="50"
+data-y="300" 
+data-speed="500"
+data-start="2000"
+data-easing="easeInCirc"
+data-splitin="none"
+data-splitout="none"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="500"
+style="z-index: 3; font-size:20px; color:#333; font-weight:300; text-shadow:none;">
+Le ofrecemos el mejor talento humano, la mejor <br />
+plataforma tecnológica y la mejor atención.
+</div>
+
+<div class="tp-caption sfb tp-resizeme"
+data-x="50"
+data-y="410" 
+data-speed="500"
+data-start="2500"
+data-easing="Power3.easeIn"
+data-splitin="none"
+data-splitout="none"
+data-elementdelay="1"
+data-endelementdelay="0.1"
+data-endspeed="500"
+style="z-index: 4; max-width: auto;">
+    <a class="btn btn-3d btn-success btn-lg" href="{{constant('ROOT')}}inmobiliaria.html">INMUEBLES EN VENTA O ALQUILER</a>
+</div>
+
+<div class="tp-caption sfr fadeout"
+data-x="right"
+data-y="43" 
+data-speed="600"
+data-start="800"
+data-easing="Power2.easeIn"
+data-elementdelay="0.1"
+data-endelementdelay="0.1"
+data-endspeed="500"
+style="z-index: 5;">
+<img src="assets/images/condominio/inmobiliaria.png" alt="">
+</div>
+</li>
+
+</ul>
+
+</div>
+</div>
+<!-- /REVOLUTION SLIDER -->
+
+<!-- Services -->
+<section>
+<div class="container">
+<!--
+LTR INFO: box-icon-left or box-icon-right - are the same on LTR
+-->
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="box-icon box-icon-center box-icon-round box-icon-transparent box-icon-large box-icon-content">
+<div class="box-icon-title">
+<i class="fa fa-building"></i>
+<h2>Inmuebles</h2>
+</div>
+<p>En venta de inmuebles y negocios, contamos con la información más actualizada de los valores en la zona, lo que nos permite realizar ventas rápidas y de justo valor. Apalancamos la venta de inmuebles o negocios, con los métodos más efectivos, como lo es la publicación en nuestras redes sociales: Facebook, Twitter, Instagram y páginas inmobiliarias de primera como: Inmobilia y Tu Inmueble, además de las publicaciones en los diarios de circulación regional.</p>
+<a href="{{constant('ROOT')}}inmobiliaria.html" class="btn btn-blue">MÁS INFORMACIÓN</a>
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="box-icon box-icon-center box-icon-round box-icon-transparent box-icon-large box-icon-content">
+<div class="box-icon-title">
+<i class="fa fa-bar-chart"></i>
+<h2>Negocios</h2>
+</div>
+<p>En relación a las actividades de Venta, Alquiler y Administración de Inmuebles y Negocios, trabajamos únicamente con inmuebles o negocios que nos son otorgados en exclusiva para la gestión de venta o alquiler, considerando que nuestra clientela requerirá asesoría, atención, dedicación e inversión publicitaria, lo cual es posible, si sólo nos garantizamos el manejo único de la gestión de venta, lo que no nos impide trabajar con otras empresas o corredores inmobiliarios.</p>
+<a href="#" class="btn btn-danger">MÁS INFORMACIÓN</a>
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="box-icon box-icon-center box-icon-round box-icon-transparent box-icon-large box-icon-content">
+<div class="box-icon-title">
+<i class="fa fa-users"></i>
+<h2>Condominios</h2>
+</div>
+<p>Contamos con una completa plataforma tecnológica que nos permiten mantener las cuentas del condominio al día, contando con un personal que se actualiza constantemente para así ofrecer a nuestros administrados, la asesoría necesaria según los requerimientos que posea el condominio, enmarcado en las leyes que regulen la materia. Asimismo, contamos con servicios únicos en nuestra región lo que nos ha permitido destacarnos a lo largo de la existencia.</p>
+<a href="{{constant('ROOT')}}condominios.html" class="btn btn-success">MÁS INFORMACIÓN</a>
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="box-icon box-icon-center box-icon-round box-icon-transparent box-icon-large box-icon-content">
+<div class="box-icon-title">
+<i class="fa fa-legal"></i>
+<h2>Asesoría</h2>
+</div>
+<p>Profesionales con talento y experiencia para brindarle asesoría en distintas áreas: inmobiliaria y comercial, jurídica en materia de condominios, cobranzas judiciales de cuotas de condominios, jurídica inquilinaria y empresarial, contratos, compra-ventas, franquicias, negociaciones entre empresas, representación ante organismos e instituciones públicas o privadas, a nivel nacional e internacional y marcas, nombres y lemas comerciales, patentes de invención.</p>
+<a href="#" class="btn btn-warning">MÁS INFORMACIÓN</a>
+</div>
+
+</div>
+
+</div>
+</div>
+</section>
+<!-- /Services -->
+<section style="background-image: url('assets/images/demo/1200x800/1-min.jpg'); background-position: 50% 79px;" class="parallax parallax-2">
+<div class="overlay dark-5"><!-- dark overlay [1 to 9 opacity] --></div>
+<div class="container text-center">
+<h2 class="font-raleway margin-bottom-10">
+<span data-speed="4000" class="countTo">2700</span> clientes
+</h2>
+<h3 class="size-25">Satisfechos, <span>Avalan nuestros servicios</span>!</h3>
+</div>
+
+</section>
+<!-- Courses -->
+<!--
+<section>
+<div class="container">
+
+<div class="row">
+<div class="col-sm-3">
+<img class="img-responsive" src="assets/images/demo/thematics/education/edu1-min.jpg" alt="img" />
+<h3 class="margin-top-10">Inmuebles</h3>
+<p>En venta de inmuebles y negocios, contamos con la información más actualizada de los valores en la zona, lo que nos permite realizar ventas rápidas y de justo valor. Apalancamos la venta de inmuebles o negocios, con los métodos más efectivos, como lo es la publicación en  nuestras redes sociales: Facebook, Twitter, Instagram y páginas inmobiliarias de primera como: Inmobilia y Tu Inmueble, además de las publicaciones en los diarios de circulación regional.</p>
+<a href="#" class="btn btn-default">MÁS INFORMACIÓN</a>
+</div>
+
+<div class="col-sm-3">
+<img class="img-responsive" src="assets/images/demo/thematics/education/edu2-min.jpg" alt="img" />
+<h3 class="margin-top-10">Negocios</h3>
+<p>En relación a las actividades de Venta, Alquiler y Administración de Inmuebles y Negocios, trabajamos únicamente con inmuebles o negocios que nos son otorgados en exclusiva para la gestión de venta o alquiler, considerando que nuestra clientela requerirá asesoría, atención, dedicación e inversión publicitaria, lo cual es posible, si sólo nos garantizamos el manejo único de la gestión de venta, lo que no nos impide trabajar con otras empresas o corredores inmobiliarios.</p>
+<a href="#" class="btn btn-default">MÁS INFORMACIÓN</a>
+</div>
+
+<div class="col-sm-3">
+<img class="img-responsive" src="assets/images/demo/thematics/education/edu3-min.jpg" alt="img" />
+<h3 class="margin-top-10">Condominios</h3>
+<p>Contamos con una completa plataforma tecnológica que nos permiten mantener las cuentas del condominio al día, contando con un personal que se actualiza constantemente para así ofrecer a nuestros administrados, la asesoría necesaria según los requerimientos que posea el condominio, enmarcado en las leyes que regulen la materia. Asimismo, contamos con servicios únicos en nuestra región lo que nos ha permitido destacarnos a lo largo de la existencia.</p>
+<a href="#" class="btn btn-default">MÁS INFORMACIÓN</a>
+</div>
+
+<div class="col-sm-3">
+<img class="img-responsive" src="assets/images/demo/thematics/education/edu3-min.jpg" alt="img" />
+<h3 class="margin-top-10">Asesoria</h3>
+<p>Profesionales con talento y experiencia para brindarle asesoría en distintas áreas: inmobiliaria y comercial, jurídica en materia de condominios, cobranzas judiciales de cuotas de condominios, jurídica inquilinaria y empresarial, contratos, compra-ventas, franquicias, negociaciones entre empresas, representación ante organismos e instituciones públicas o privadas, a nivel nacional e internacional y marcas, nombres y lemas comerciales, patentes de invención.</p>
+<a href="#" class="btn btn-default">MÁS INFORMACIÓN</a>
+</div>
+</div>
+
+</div>
+</section>
+-->
+<!-- /Courses -->
+
+<!-- Testimonials -->
+<!--
+<section class="padding-xxs dark">
+<div class="container">
+
+<div class="owl-carousel text-center owl-testimonial nomargin" data-plugin-options='{"singleItem": true, "autoPlay": 3500, "navigation": false, "pagination": true, "transitionStyle":"fade"}'>
+<div class="testimonial">
+<figure>
+<img class="rounded" src="assets/images/demo/people/300x300/11-min.jpg" alt="" />
+</figure>
+<div class="testimonial-content nopadding">
+<p class="lead">Incidunt deleniti blanditiis quas aperiam recusandae consequatur ullam quibusdam cum libero.</p>
+<cite>
+Joana Doe
+<span>Company Ltd.</span>
+</cite>
+</div>
+</div>
+<div class="testimonial">
+<figure>
+<img class="rounded" src="assets/images/demo/people/300x300/12-min.jpg" alt="" />
+</figure>
+<div class="testimonial-content nopadding">
+<p class="lead">Quod necessitatibus quis expedita harum provident eos obcaecati id culpa.</p>
+<cite>
+Melissa Doe
+<span>Company Ltd.</span>
+</cite>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+-->
+<!-- /Testimonials -->
+
+<!-- Overview -->
+<section>
+<div class="container text-center">
+
+<div class="row text-left">
+
+<div class="col-sm-8">
+<img src="assets/images/demo/laptop.png" alt="product image" />
+</div>
+
+<div class="col-sm-4">
+<h3 class="weight-300">Condominio <span>En Línea</span></h3>
+<p>Ahora usted cuenta con un canal de comunicación siempre disponible. Haga sus operaciones de su cuenta de condominio sin perder tiempo.</p>
+<hr />
+<ul class="list-unstyled list-icons">
+<li><i class="fa fa-check text-info"></i> Consulta estado de cuenta</li>
+<li><i class="fa fa-check text-info"></i> Mantenga actualizada su información de contacto</li>
+<li><i class="fa fa-check text-info"></i> Cambie su clave de acceso</li>
+<li><i class="fa fa-check text-info"></i> Descargue e imprima sus avisos de cobro</li>
+<li><i class="fa fa-check text-info"></i> Reporte sus pagos de condominio</li>
+<li><i class="fa fa-check text-info"></i> Descargue e imprima sus comprobantes de pago</li>
+<li><i class="fa fa-check text-info"></i> Consulta e estado de cuenta general del inmueble</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+</section>
+<!-- /Overview -->
+<!-- Parallax -->
+<section class="parallax parallax-1" style="background-image: url('assets/images/demo/1200x800/34-min.jpg');">
+<div class="overlay dark-5"><!-- dark overlay [1 to 9 opacity] --></div>
+
+<div class="container">
+
+<div class="text-center">
+<h2 class="size-40 weight-300">Sistema de consultas de condominio en línea.</h2>
+<p>Consulta estado de cuenta, avisos de cobro, reporta pagos de condominio y más...</p>
+<a class="btn btn-default btn-lg" href="{{constant('ROOT')}}login.php"><i class="fa fa-check"></i> Ingresar</a> 
+</div>
+
+</div>
+</section>
+<!-- /Parallax -->
+<!-- Reservation -->
+<section class="" style="color:#333 !important">
+<div class="container">
+    <div class="text-center">
+        <h2 class="nomargin">Comparte <span>tus inquietudes</span></h2>
+        <p class="font-lato weight-300 lead nomargin-top">Somos talento y experiencia, somos garantía de tu inversión.</p>
+        <ul class="margin-top-40 social-icons list-unstyled list-inline blue">
+        <li>
+        <a href="https://www.facebook.com/grupoveneto1/" target="_blank">
+                <i class="fa fa-facebook"></i>
+                <h4>Facebook</h4>
+                <span>Se nuestro amigo</span>
+        </a>
+        </li>
+        <li>
+        <a href="https://twitter.com/grupoveneto" target="_blank">
+                <i class="fa fa-twitter"></i>
+                <h4>Twitter</h4>
+                <span>Siguenos</span>
+        </a>
+        </li>
+        <li>
+        <a href="#" target="_blank">
+                <i class="fa fa-youtube"></i>
+                <h4>Youtube</h4>
+                <span>Nuestros Videos</span>
+        </a>
+        </li>
+        <li>
+        <a href="https://instagram.com/grupoveneto/" target="_blank">
+                <i class="fa fa-instagram"></i>
+                <h4>Instagram</h4>
+                <span>Vea nuestras imagenes</span>
+        </a>
+        </li>
+        <li>
+        <a href="https://instagram.com/grupoveneto/" target="_blank">
+                <i class="fa fa-pinterest"></i>
+                <h4>Pinterest</h4>
+                <span>Descubimiento Visual</span>
+        </a>
+        </li>
+        </ul>
+</div>
+</div>
+</section>
+<!-- /Reservation -->
+{% endblock %}
+
+{% block footer %}
+{% include 'misc/footer.html.twig' %}
+{% endblock %}
+</div>
+<!-- /wrapper -->
+
+
+<!-- SCROLL TO TOP -->
+<a href="#" id="toTop"></a>
+
+
+<!-- PRELOADER -->
+<div id="preloader">
+<div class="inner">
+<span class="loader"></span>
+</div>
+</div>
+<!-- /PRELOADER -->
+
+{% block javascript %}
+<!-- JAVASCRIPT FILES -->
+<script type="text/javascript">var plugin_path = '{{constant('ROOT')}}assets/plugins/';</script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/js/scripts.js"></script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/plugins/countdown/jquery.countdown.pack.min.js"></script>
+
+<!-- REVOLUTION SLIDER -->
+<script type="text/javascript" src="{{constant('ROOT')}}assets/plugins/slider.revolution/js/jquery.themepunch.tools.min.js"></script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/plugins/slider.revolution/js/jquery.themepunch.revolution.min.js"></script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/js/view/demo.revolution_slider.js"></script>
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-4533943-17', 'auto');
+ga('send', 'pageview');
+</script>
+{% endblock %}
+</body>
+</html>

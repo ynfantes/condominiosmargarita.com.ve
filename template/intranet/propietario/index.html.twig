@@ -1,0 +1,237 @@
+<div class="row">
+<!-- col -->
+<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+<h1 class="page-title txt-color-blue">
+<i class="fa-fw fa fa-credit-card"></i> Ficha de Propietario
+</h1>
+</div>
+<!-- end col -->
+<!-- right side of the page with the sparkline graphs -->
+<!-- col -->
+<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+    <!-- sparks -->
+    <ul id="sparks">
+        {% set cobranza = 0 %}
+        {% set recibos = propietario.recibos %}
+        {% if recibos > constant('MESES_COBRANZA') %}
+            {% set cobranza = 1 %}
+        {% endif %}
+        {% if cobranza == 0 %}    
+        <li class="sparks-info">
+            <h5>Recibos <span class="txt-color-purple"><i class="fa fa-arrow-circle-up" data-rel="bootstrap-tooltip" title="Increased"></i>&nbsp;{{ recibos }}</span></h5>
+        </li>
+        <li class="sparks-info">
+            <h5> Inmuebles <span class="txt-color-greenDark"><i class="fa fa-building-o"></i>&nbsp;1</span></h5>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- end sparks -->
+</div>
+</div>
+<section id="widget-grid" class="">
+<div class="row">
+<div class="col-sm-12">
+<div class="row">
+<form  name="cobranza">
+<div class="col-sm-6">
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon"><i class="fa fa-building fa-lg fa-fw"></i></span>
+<select class="form-control input-lg" name="inmueble">
+<option value="">Seleccione un Inmueble</option>
+{% for inmueble in inmuebles %}
+    <option value="{{inmueble.id}}" {% if inmueble.id == inm %} selected="selected" {% endif %}>{{inm}} {{inmueble.nombre_inmueble}}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+</div>
+<div class="col-sm-4">
+<div class="form-group">
+<div class="input-group">
+<div class="input-group">
+    
+<span class="input-group-addon"><i class="fa fa-users fa-lg fa-fw"></i></span>
+<select class="form-control input-lg" name="apto">
+    <option value="">Seleccione un Propietario</option>
+    
+    {% if propietarios %}
+        {% for propietario in propietarios %}
+            <option value="{{propietario.apto}}" {% if propietario.apto == apto %} selected="selected" {% endif %}>{{propietario.apto}} {{propietario.nombre}}</option>
+        {% endfor %}
+    {% endif %}
+</select>
+</div>
+</div>
+</div>
+</div>
+<div class="col-sm-2">
+<div class="form-group">
+<div class="input-group">
+<button class="btn btn-primary" name="consultar" ><i class="fa fa-check"></i> Consultar&nbsp;&nbsp;</button>
+</div>
+</div>
+</div>
+</form>
+</div>
+{% if propietario %}
+{%if resultado%}
+<div class="row">
+{% include 'misc/resultado.html.twig' %}
+</div>
+{% endif %}
+<div data-widget-custombutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-colorbutton="false" id="wid-id-11" class="jarviswidget transparent" style="" role="widget">
+<header>
+<span class="widget-icon"> <i class="fa fa-user"></i> </span>
+<h3>Datos Generales </h3>				
+</header>
+<!-- widget div-->
+<div role="content">
+
+<!-- widget content -->
+<div class="widget-body">
+<!-- widget body text-->
+<div class="tab-content padding-10">
+<div class="widget-body">
+<form class="form-horizontal" name="perfil">
+<fieldset>
+<legend class="txt-color-blue"><strong>General</strong></legend>
+<input type="hidden" name="id" value="{{ propietario.id }}"/>
+<input type="hidden" name="modificado" value="1"/>
+<input type="hidden" name="inmueble" value="{{inm}}"/>
+<input type="hidden" name="apto" value="{{apto}}"/>
+<div class="form-group">
+<label class="col-md-2 control-label">Nombre Razón Social</label>
+<div class="col-md-10">
+<input type="text" value="{{ propietario.nombre }}" class="form-control" disabled="disabled">
+</div>
+</div>
+<div class="form-group">
+<label class="col-md-2 control-label">Cédula de Identidad</label>
+<div class="col-md-4">
+<input type="text" list="list" class="form-control" value="{{ propietario.cedula }}"  disabled="disabled">
+</div>
+</div>
+</fieldset>
+<fieldset>
+<legend class="txt-color-blue"><strong>Contacto</strong></legend>
+<div class="form-group">
+<label class="col-md-2 control-label" for="telefono1">Teléfono Habitación</label>
+<div class="col-md-4"><div class="input-group">
+<input type="text" id="telefono1" name="telefono1" value="{{ propietario.telefono1 }}" class="form-control" data-mask-placeholder="_" data-mask="(9999) 999-9999">
+<span class="input-group-addon"><i class="fa fa-phone"></i></span>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label class="col-md-2 control-label" for="telefono2">Teléfono Oficina</label>
+<div class="col-md-4"><div class="input-group">
+<input type="text" id="telefono2" name="telefono2" value="{{ propietario.telefono2 }}" class="form-control" data-mask-placeholder="_" data-mask="(9999) 999-9999">
+<span class="input-group-addon"><i class="fa fa-phone"></i></span>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label class="col-md-2 control-label" for="telefono2">Teléfono Celular</label>
+<div class="col-md-4"><div class="input-group">
+<input type="text" id="telefono3" name="telefono3" value="{{ propietario.telefono3 }}" class="alphanumeric form-control"  data-mask-placeholder="_" data-mask="(9999) 999-9999">
+<span class="input-group-addon"><i class="fa fa-phone"></i></span>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label class="col-md-2 control-label" for="email">Correo electrónico</label>
+<div class="col-md-4"><div class="input-group">
+<input type="text" id="email" name="email" value="{{ propietario.email }}" class="required email form-control">
+<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label class="col-md-2 control-label" for="email">Correo electrónico Alternativo</label>
+<div class="col-md-4"><div class="input-group">
+<input type="text" id="email_alternativo" name="email_alternativo" value="{{ propietario.email_alternativo }}" class="required email form-control">
+<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label class="col-md-2 control-label" for="direccion">Dirección</label>
+<div class="col-md-10">
+<textarea class="required form-control" name="direccion">{{ propietario.direccion}}</textarea>
+</div>
+</div>
+
+</fieldset>
+<div class="form-actions">
+<div class="row">
+<div class="col-md-12">
+<button class="btn btn-primary" name="actualizar">
+<i class="fa fa-save"></i>
+Guardar
+</button>
+</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+<!-- end widget body text-->
+</div>
+<!-- end widget content -->
+</div>
+<!-- end widget div -->
+</div>
+{% endif %}
+</div>
+</div>
+</section>
+<script type="text/javascript">
+	pageSetUp();
+	var pagefunction = function() {
+        
+        $(function() {
+            $("button[name|='consultar']").click(function() {
+                var url = "{{constant('URL_INTRANET')}}/propietario/consultar";
+                var data = $("form[name|='cobranza']").serialize();
+                enviarFormulario(data, url);
+                return false; // Evitar ejecutar el submit del formulario.
+            });
+        });
+        
+        $(function() {
+            $("button[name|='actualizar']").click(function() {
+                var url = "{{ constant('URL_INTRANET') }}/propietario/modificar/perfil";
+                var data = $("form[name|='perfil']").serialize();
+                enviarFormulario(data, url);
+                return false; // Evitar ejecutar el submit del formulario.
+            });
+        });
+        
+        $("select[name|='inmueble']").change(function() {
+            var inm = $(this).val();
+            if(inm!="") {
+                var datos = { id_inmueble : $(this).val() };
+                $.post("{{constant('URL_INTRANET')}}/caja/listarPropietariosPorInmueble", datos, function(propietarios) {
+
+                     $("select[name|='apto']").empty();
+                     $.each(propietarios, function(index, propietario) {
+
+                         $("select[name|='apto']").append("<option value=\"" + propietario.apto + "\">" + propietario.apto + ' ' + propietario.nombre + "</option>");
+                     });
+                 }, 'json');
+            } else {
+                $("select[name|='apto']").empty();
+                $("select[name|='apto']").append('<option value="">Seleccione unidad familiar</option>');
+            }
+         });
+        
+        
+
+	};
+	// end pagefunction
+	
+	// Load bootstrap wizard dependency then run pagefunction
+	pagefunction();
+
+</script>

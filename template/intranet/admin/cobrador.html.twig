@@ -1,0 +1,176 @@
+<div class="row">
+<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+<h1 class="page-title txt-color-blue">
+<i class="fa-fw fa fa-credit-card"></i> Cobrador Inmuble
+</h1>
+</div>
+</div>
+<section id="widget-grid" class="">
+    <div class="row">
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<div class="row">
+<div class="col-sm-12">
+<div class="row">
+<form  name="cobranza">
+<div class="col-sm-6">
+<div class="form-group">
+<div class="input-group">
+<span class="input-group-addon"><i class="fa fa-user fa-lg fa-fw"></i></span>
+<select class="form-control input-lg" name="usuario">
+<option value="">Seleccione un usuario</option>
+{% for usuario in usuarios %}
+    <option value="{{usuario.id}}" {% if usuario.id == u %} selected="selected" {% endif %}>{{usuario.nombre_completo}}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+</div>
+<div class="col-sm-2">
+<div class="form-group">
+<div class="input-group">
+<button class="btn btn-primary" name="consultar" ><i class="fa fa-check"></i> Consultar&nbsp;&nbsp;</button>
+</div>
+</div>
+</div>
+<div class="col-sm-4">
+</div>
+</form>
+</div>
+</div>
+</div>
+<table id="jqgrid"></table>
+<div id="pjqgrid"></div>
+</article>
+    </div>
+</section>
+<script type="text/javascript">
+	pageSetUp();
+	var pagefunction = function() {
+        
+        $(function() {
+            $("button[name|='consultar']").click(function() {
+                var url = "{{constant('URL_INTRANET')}}/admin/cobrador";
+                var data = $("form[name|='cobranza']").serialize();
+                enviarFormulario(data, url);
+                return false; // Evitar ejecutar el submit del formulario.
+            });
+        });
+        
+        
+        loadScript("{{constant('ROOT')}}assets/js/plugin/jqgrid/jquery.jqGrid.min.js", run_jqgrid_function);
+        function run_jqgrid_function() {
+
+            jQuery("#jqgrid").jqGrid({
+                    url:'{{constant('ROOT')}}intranet/admin/listaInmueblesAsignados/{{u}}',
+                    datatype : "json",
+                    height : 'auto',
+                    colNames : ['Accion', 'ID', 'Codigo','Inmueble'],
+                    colModel : [
+                            { name : 'act', index:'act', sortable:false, width:40 }, 
+                            { name : 'id', index : 'id', width:20 }, 
+                            { name : 'id_usuario', index : 'id_usuario', width:20,editable: true,hidden:true,
+                                editoptions:{
+                                    dataInit: function(e) {
+                                        $(e).val({{u}});
+                                    }
+                                }
+                            }, 
+                            { 
+                                name : 'nombre_inmueble', 
+                                index : 'nombre_inmueble', 
+                                editable : true,
+                                edittype:"select",
+                                editoptions:{
+                                    value:"{{lista_inmuebles}}",
+                                    dataEvents:[{
+                                        type:'change',
+                                        fn: function(e) {
+                                            var row = $(e.target).closest('tr.jqgrow');
+                                            //$("input", row[0].children[3]).val($("select",row[0].children[4]).val());
+                                        }
+                                    }]
+                                }
+                            }],
+                    rowNum : 10,
+                    rowList : [10, 20, 30],
+                    pager : '#pjqgrid',
+                    sortname : 'id',
+                    toolbarfilter: true,
+                    viewrecords : true,
+                    sortorder : "asc",
+                    gridComplete: function(){
+                        var ids = jQuery("#jqgrid").jqGrid('getDataIDs');
+                        for(var i=0;i < ids.length;i++){
+                            var cl = ids[i];
+                            be = "<button class='btn btn-xs btn-default' data-original-title='Editar fila' onclick=\"jQuery('#jqgrid').editRow('"+cl+"');\"><i class='fa fa-pencil'></i></button>"; 
+                            se = "<button class='btn btn-xs btn-default' data-original-title='Guardar fila' onclick=\"jQuery('#jqgrid').saveRow('"+cl+"');\"><i class='fa fa-save'></i></button>";
+                            ca = "<button class='btn btn-xs btn-default' data-original-title='Cancelar' onclick=\"jQuery('#jqgrid').restoreRow('"+cl+"');\"><i class='fa fa-times'></i></button>";  
+                            //ce = "<button class='btn btn-xs btn-default' onclick=\"jQuery('#jqgrid').restoreRow('"+cl+"');\"><i class='fa fa-times'></i></button>"; 
+                            //jQuery("#jqgrid").jqGrid('setRowData',ids[i],{act:be+se+ce});
+                            jQuery("#jqgrid").jqGrid('setRowData',ids[i],{act:be+se+ca});
+                        }	
+                    },
+                    editurl : "admin/asignarCobrador",
+                    caption : "Inmuebles asignados",
+                    multiselect : true,
+                    autowidth : true,
+
+                    });
+            
+            jQuery("#jqgrid").jqGrid('navGrid', "#pjqgrid", {
+                    edit : false,
+                    add : false,
+                    del : true
+            });
+            jQuery("#jqgrid").jqGrid('inlineNav', "#pjqgrid");
+            /* Add tooltips */
+            $('.navtable .ui-pg-button').tooltip({
+                container : 'body'
+            });
+            
+            // remove classes
+            $(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
+            $(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
+            $(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-columnui-th-ltr");
+            $(".ui-jqgrid-pager").removeClass("ui-state-default");
+            $(".ui-jqgrid").removeClass("ui-widget-content");
+
+            // add classes
+            $(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
+            $(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
+
+
+            $(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
+            $(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
+            $(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
+            $(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
+            $(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
+            $(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
+            $(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
+            $(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
+
+            $(".ui-icon.ui-icon-seek-prev" ).wrap( "<div class='btn btn-sm btn-default'></div>" );
+            $(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
+
+            $(".ui-icon.ui-icon-seek-first" ).wrap( "<div class='btn btn-sm btn-default'></div>" );
+            $(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");		  	
+
+            $(".ui-icon.ui-icon-seek-next" ).wrap( "<div class='btn btn-sm btn-default'></div>" );
+            $(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
+
+            $(".ui-icon.ui-icon-seek-end" ).wrap( "<div class='btn btn-sm btn-default'></div>" );
+            $(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
+
+            // update buttons
+            $(window).on('resize.jqGrid', function () {
+                jQuery("#jqgrid").jqGrid( 'setGridWidth', $("#content").width() );
+            })
+
+            } // end function
+        };
+	// end pagefunction
+	
+	// Load bootstrap wizard dependency then run pagefunction
+        loadScript("{{constant('ROOT')}}assets/js/plugin/jqgrid/grid.locale-en.min.js", pagefunction);
+        
+</script>

@@ -1,0 +1,33 @@
+{# indice #}
+{% extends 'layout/intranet.html.twig'%}
+{% block titulo 'Administradora de Condominio'%}
+{% block contenido %}
+    {% block sidebar %}
+    {{ parent() }}
+    {% endblock %}
+<!-- contenido -->
+<div role="main" id="main">
+<!-- RIBBON -->
+<div id="ribbon">
+<span class="ribbon-button-alignment"> 
+<span data-reset-msg="" data-html="true" data-original-title="&lt;i class='text-info fa fa-info'&gt;&lt;/i&gt; Atención! Va a refrescar esta página web." data-placement="bottom" rel="tooltip" data-title="refresh" data-action="resetWidgets" class="btn btn-ribbon" id="refresh"><i class="fa fa-refresh"></i></span>
+</span>
+<!-- breadcrumb -->
+<ol class="breadcrumb">
+<!-- This is auto generated -->
+</ol>
+<!-- end breadcrumb -->
+
+</div>
+
+<!-- #MAIN CONTENT -->
+<div id="content">
+    
+</div>
+<!-- END #MAIN CONTENT -->
+</div>
+<!-- fin contenido -->
+{% endblock %}
+{% block footer %}
+{{ parent() }}
+{% endblock %}

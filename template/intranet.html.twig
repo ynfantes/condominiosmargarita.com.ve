@@ -1,0 +1,95 @@
+{% extends 'layout/base.html.twig'%}
+{% block titulo %}Administradora de Condominos, Veneto en línea{% endblock %}
+{% block contenido %}
+    <section class="page-header parallax parallax-3" style="background-image:url('{{constant('ROOT')}}assets/images/demo/1200x800/administracion.jpg')">
+<div class="overlay dark-6"></div>
+<div class="container">
+<h1>Intranet</h1>
+<!-- breadcrumbs -->
+<ol class="breadcrumb">
+    <li><a href="{{constant('ROOT')}}">Inicio</a></li>
+    <li>Intranet</li>
+    <li><a href="#" class="active">Login</a></li>
+</ol>
+<!-- /breadcrumbs -->
+</div>
+</section>
+<section>
+<div class="container">
+
+<div class="row">
+
+<!-- LEFT TEXT -->
+<div class="col-md-5 col-md-offset-1">
+
+<h2 class="size-16">Intranet</h2>
+<p class="text-muted">Bienvenido a la Intranet de Administradora Veneto, esta área
+    está restringida para usuarios registrados.</p>
+
+</div>
+<!-- /LEFT TEXT -->
+
+<!-- LOGIN -->
+<div class="col-md-4">
+
+<!-- Alert Failed -->
+<div id="alert_pass" class="alert alert-danger margin-bottom-30">
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+<strong>Ups!</strong> ha ingresado un password incorrecto!
+</div>
+<!-- /Alert Failed -->
+
+<!-- Alert Failed -->
+<div id="alert_user" class="alert alert-danger margin-bottom-30">
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+<strong>Ups!</strong> ha ingresado un nombre de usuario incorrecto!
+</div>
+<!-- /Alert Failed -->
+
+<!-- Alert Mandatory -->
+<div id="alert_mandatory" class="alert alert-danger margin-bottom-30">
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+<strong>Lo sentimos!</strong> Usted necesita completar los campos requeridos (*)!
+</div>
+<!-- /Alert Mandatory -->
+<h2 class="size-16">LOGIN</h2>
+
+<!-- login form -->
+<form autocomplete="off" action="php/login-intranet.php" method="post">
+<div class="clearfix">
+
+<!-- Apartamento -->
+<div class="form-group">
+<input type="text" required="" placeholder="Usuario" class="form-control" name="nombre">
+</div>
+<!-- Password -->
+<div class="form-group">
+<input type="password" required="" placeholder="Password" class="form-control" name="password">
+</div>
+</div>
+<div class="row">
+<div class="col-md-6 col-sm-6 col-xs-6">
+<!-- Inform Tip -->                                        
+<div class="form-tip pt-20">
+    <a href="{{constant('ROOT')}}recuperar-password.php" class="no-text-decoration size-13 margin-top-10 block">¿Olvidó su password?</a>
+</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-6 text-right">
+<button class="btn btn-primary">OK, ENTRAR</button>
+</div>
+</div>
+</form>
+<!-- /login form -->
+<!-- ALERT alert-danger -->
+<div id="resultado" class="alert alert-mini margin-bottom-30">
+</div><!-- /ALERT -->
+</div>
+<!-- /LOGIN -->
+</div>
+</div>
+</section>
+{% endblock %}
+{% block javascript %}
+{{ parent()}}
+<script type="text/javascript" src="{{constant('ROOT')}}assets/js/login.js"></script>
+{% endblock %}
