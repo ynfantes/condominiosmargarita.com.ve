@@ -3,9 +3,8 @@ AddCharset utf-8 .html
 Options +FollowSymLinks
 RewriteEngine on
 
-##RewriteCond %{HTTP_HOST} ^grupoinmobiliariotierradelsol.com
-##RewriteCond %{SERVER_PORT} 80
-##RewriteRule ^(.*)$ http://www.condominiosmargarita.com.ve/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^condominiosmargarita.com.ve
+RewriteRule (.*) http://www.condominiosmargarita.com.ve/$1 [R=301,L]
 
 Rewriterule ^enlinea/([A-Za-z\-]+)/([A-Za-z\-]+)$ enlinea/$1/index.php?accion=$2 [L]
 #Rewriterule ^enlinea/([A-Za-z\-]+)/([A-Za-z\-]+)/([0-9]{1,5})$ enlinea/$1/index.php?accion=$2&id=$3 [L]
