@@ -1,3 +1,3 @@
-/data/*.txt
-/.vscode
-/includes/configuracion.php
+.vscode
+data/*.txt
+includes/configuracion.php
