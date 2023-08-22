@@ -589,7 +589,15 @@ $mensaje.="Fecha: ".$fecha;
 
 
 $mail = new mailto(SMTP);
-$r = $mail->enviar_email("Actualizacion ".NOMBRE_APLICACION.' '.$fecha,$mensaje, "", 'ynfantes@gmail.com',"");
+$r = $mail->enviar_email(
+    "Actualizacion ".NOMBRE_APLICACION.' '.$fecha,
+    $mensaje, 
+    "", 
+    "condominiosmargarita.va@gmail.com",
+    "Condominios Margarita",
+    null,
+    "ynfantes@gmail.com"
+);
         
 if ($r=="") {
     echo "Email de confirmación enviado con éxito\n";
