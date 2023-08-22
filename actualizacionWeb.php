@@ -11,7 +11,19 @@ include_once 'includes/factura.php';
 
 $db = new db();
 
-$tablas = array("factura_detalle", "facturas", "propiedades", "propietarios", "junta_condominio", "inmueble", "inmueble_deuda_confidencial","grupo","grupo_propietario","fondos_movimiento","cancelacion_gastos");
+$tablas = [
+    "factura_detalle",
+    "facturas", 
+    "propiedades", 
+    "propietarios", 
+    "junta_condominio", 
+    "inmueble", 
+    "inmueble_deuda_confidencial",
+    "grupo",
+    "grupo_propietario",
+    "fondos_movimiento",
+    "cancelacion_gastos"
+];
 
 if (isset($_GET['codinm'])) {
     $codinm = $_GET['codinm'];
@@ -32,17 +44,20 @@ if (isset($_GET['codinm'])) {
     $mensaje = "Proceso de Actualización Ejecutado<br />";
     foreach ($tablas as $tabla) {
         $r = $db->exec_query("truncate table " . $tabla);
-        echo "limpiar tabla: " .$tabla."<br />";
+        if (!MOROSO) {
+            echo "limpiar tabla: " .$tabla."<br />";
+        }
     }
 }
 
-// <editor-fold defaultstate="collapsed" desc="Procesamos el archivo inmueble">
 $archivo = ACTUALIZ . ARCHIVO_INMUEBLE;
 $contenidoFichero = JFile::read($archivo);
 $lineas = explode("\r\n", $contenidoFichero);
 $inmueble = new inmueble();
-$mensaje.= "procesar archivo inmueble (".count($lineas).")<br />";
-echo "procesar archivo inmueble (".count($lineas).")<br />";
+if (!MOROSO) {
+    $mensaje.= "procesar archivo inmueble (".count($lineas).")<br />";
+    echo "procesar archivo inmueble (".count($lineas).")<br />";
+}
 foreach ($lineas as $linea) {
     
     $registro = explode("\t", $linea);
@@ -69,21 +84,22 @@ foreach ($lineas as $linea) {
         $r = $inmueble->insertar($registro);
         
         if($r["suceed"]==FALSE){
-            echo ARCHIVO_INMUEBLE."<br />".$r['stats']['errno']."<br />".$r['stats']['error'];
-            echo $r['query'];
-            die();
+            if (!MOROSO) {
+                echo ARCHIVO_INMUEBLE."<br/>".$r['stats']['errno']." ".'<br/>'.$r['query'].'<br/>';
+            }
         }   
     }
-}// </editor-fold>
+}
 
-// <editor-fold defaultstate="collapsed" desc="procesamos el archivo cuentas">
+
 $archivo = ACTUALIZ . ARCHIVO_CUENTAS;
 $contenidoFichero = JFile::read($archivo);
 $lineas = explode("\r\n", $contenidoFichero);
 $inmueble = new inmueble();
-$mensaje.= "actulizando cuentas inmuebles (" . count($lineas) . ")<br />";
-echo "actualizando cuentas inmuebles (" . count($lineas) . ")<br />";
-
+if (!MOROSO) {
+    $mensaje.= "actulizando cuentas inmuebles (" . count($lineas) . ")<br />";
+    echo "actualizando cuentas inmuebles (" . count($lineas) . ")<br />";
+}
 foreach ($lineas as $linea) {
     $id = '';
     $registro = explode("\t", $linea);
@@ -97,52 +113,57 @@ foreach ($lineas as $linea) {
 
         $r = $inmueble->actualizar("'".$id."'",$registro);
         if ($r["suceed"] == FALSE) {
-            //echo ARCHIVO_INMUEBLE."<br />".$r['stats']['errno']."<br />".$r['stats']['error'];
-            echo $r['query'];
-            die();
-        }
-
-    }
-}// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="cuentas inmuebles">
-$archivo = "./data/CUENTAS_INMUEBLE.txt";
-if (file_exists($archivo)) {
-    $contenidoFichero = JFile::read($archivo);
-    $lineas = explode("\r\n", $contenidoFichero);
-    $mensaje .= "Procesar Cuentas Inmuebles (" . count($lineas) . ")<br />";
-    echo "Procesar archivo Cuentas Inmuebles (" . count($lineas) . ")<br />";
-    foreach ($lineas as $linea) {
-        $registro = explode("\t", $linea);
-
-        if ($registro[0] != "") {
-            $registro = Array(
-                "id_inmueble" => $registro[0],
-                "numero_cuenta" => $registro[1],
-                "banco" => $registro[2]);
-
-
-            $r = $inmueble->agregarCuentaInmueble($registro);
-
-
-            if ($r["suceed"] == FALSE) {
-                //echo ARCHIVO_INMUEBLE."<br />".$r['stats']['errno']."<br />".$r['stats']['error'];
+            
+            if (!MOROSO) {
                 echo $r['query'];
                 die();
             }
-                }
-    }
-    
-} 
-// </editor-fold>
+        }
 
-// <editor-fold defaultstate="collapsed" desc="Procesamos el archivo Junta_Condominio">
+    }
+}
+
+
+// $archivo = "./data/CUENTAS_INMUEBLE.txt";
+// if (file_exists($archivo)) {
+//     $contenidoFichero = JFile::read($archivo);
+//     $lineas = explode("\r\n", $contenidoFichero);
+//     if (!MOROSO) {
+//         $mensaje .= "Procesar Cuentas Inmuebles (" . count($lineas) . ")<br />";
+//         echo "Procesar archivo Cuentas Inmuebles (" . count($lineas) . ")<br />";
+//     }
+//     foreach ($lineas as $linea) {
+//         $registro = explode("\t", $linea);
+
+//         if ($registro[0] != "") {
+//             $registro = Array(
+//                 "id_inmueble" => $registro[0],
+//                 "numero_cuenta" => $registro[1],
+//                 "banco" => $registro[2]);
+
+
+//             $r = $inmueble->agregarCuentaInmueble($registro);
+
+
+//             if ($r["suceed"] == FALSE) {
+//                 //echo ARCHIVO_INMUEBLE."<br />".$r['stats']['errno']."<br />".$r['stats']['error'];
+//                 echo $r['query'];
+//                 die();
+//             }
+//                 }
+//     }
+    
+// } 
+
+
 $archivo = ACTUALIZ . ARCHIVO_JUNTA_CONDOMINIO;
 $contenidoFichero = JFile::read($archivo);
 $lineas = explode("\r\n", $contenidoFichero);
 $junta_condominio = new junta_condominio();
-echo "procesar archivo Junta Condominio (".count($lineas).")<br />";
-$mensaje.= "procesar archivo Junta Condominio (".count($lineas).")<br />";
+if (!MOROSO) {
+    echo "procesar archivo Junta Condominio (".count($lineas).")<br />";
+    $mensaje.= "procesar archivo Junta Condominio (".count($lineas).")<br />";
+}
 foreach ($lineas as $linea) {
 
     $registro = explode("\t", $linea);
@@ -159,15 +180,16 @@ foreach ($lineas as $linea) {
         }
     }
 }
-// </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Procesamos el archivo Propietarios">
+
 $archivo = ACTUALIZ . ARCHIVO_PROPIETARIOS;
 $contenidoFichero = JFile::read($archivo);
 $lineas = explode("\r\n", $contenidoFichero);
 $propietario = new propietario();
-echo "procesar archivo Propietarios (".count($lineas).")<br />";
-$mensaje.= "procesar archivo Propietarios (".count($lineas).")<br />";
+if (!MOROSO) {
+    echo "procesar archivo Propietarios (".count($lineas).")<br />";
+    $mensaje.= "procesar archivo Propietarios (".count($lineas).")<br />";
+}
 foreach ($lineas as $linea) {
 
 
@@ -191,22 +213,24 @@ foreach ($lineas as $linea) {
        $r = $propietario->insertar($registro);
        
        if($r["suceed"]==false){
-            echo "<b>Archivo Propietario: ".$r['stats']['errno']."-".$r['stats']['error']."</b><br />";
-            //die($r['query']);
+                if (!MOROSO) {
+                    echo "<b>Archivo Propietario: ".$archivo.' - '.$r['stats']['errno']."-".$r['stats']['error']."</b>".'<br/>'.$r['query'].'<br/>';
+                    die($r['query']);
+            }
         }
             /*}
         }*/
     }
 }
-// </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Procesamos el archivo Propiedades">
 $archivo = ACTUALIZ . ARCHIVO_PROPIEDADES;
 $contenidoFichero = JFile::read($archivo);
 $lineas = explode("\r\n", $contenidoFichero);
 $propiedades = new propiedades();
-echo "procesar archivo Propiedades (".count($lineas).")<br />";
-$mensaje.= "procesar archivo Propiedades (".count($lineas).")<br />";
+if (!MOROSO) {
+    echo "procesar archivo Propiedades (".count($lineas).")<br />";
+    $mensaje.= "procesar archivo Propiedades (".count($lineas).")<br />";
+}
 foreach ($lineas as $linea) {
 
 
@@ -225,19 +249,21 @@ foreach ($lineas as $linea) {
         
         $r = $propiedades->insertar($registro);
         if($r["suceed"]==FALSE){
-            echo "<b>Archivo Propiedades: ".$r['stats']['errno']."-".$r['stats']['error']."</b><br />";
-            die($r['query']);
+            if (!MOROSO) {
+                echo "<b>Archivo Propiedades: ".$r['stats']['errno']."-".$r['stats']['error']."</b><br />".'<br/>'.$r['query'].'<br/>';
+            }
         }
     }
-}// </editor-fold>
+}
 
-// <editor-fold defaultstate="collapsed" desc="Procesamos el archivo Facturas">
 $archivo = ACTUALIZ . ARCHIVO_FACTURA;
 $contenidoFichero = JFile::read($archivo);
 $lineas = explode("\r\n", $contenidoFichero);
 $facturas = new factura();
-echo "procesar archivo Facturas (".count($lineas).")<br />";
-$mensaje.= "procesar archivo Facturas (".count($lineas).")<br />";
+if (!MOROSO) {
+    echo "procesar archivo Facturas (".count($lineas).")<br />";
+    $mensaje.= "procesar archivo Facturas (".count($lineas).")<br />";
+}
 foreach ($lineas as $linea) {
     
     $registro = explode("\t", $linea);
@@ -258,10 +284,12 @@ foreach ($lineas as $linea) {
         $r = $facturas->insertar($registro);
                 
         if(!$r["suceed"]){
-            die($r['stats']['errno']."<br />".$r['stats']['error']);
+            if (!MOROSO) {
+                echo($r['stats']['errno']."-".$r['stats']['error'].'<br/>'.$r['query'].'<br/>');
+            }
         }
     }
-}// </editor-fold>
+}
 
 //// <editor-fold defaultstate="collapsed" desc="Procesamos el archivo Detalle Factura">
 //$archivo = ACTUALIZ . ARCHIVO_FACTURA_DETALLE;
@@ -296,8 +324,10 @@ foreach ($lineas as $linea) {
 $archivo = ACTUALIZ . ARCHIVO_EDO_CTA_INM;
 $contenidoFichero = JFile::read($archivo);
 $lineas = explode("\r\n", $contenidoFichero);
-echo "procesar archivo estado de cuenta inmueble (".count($lineas).")<br />";
-$mensaje.="procesar archivo estado de cuenta inmueble (".count($lineas).")<br />";
+if (!MOROSO) {
+    $mensaje.="procesar archivo estado de cuenta inmueble (".count($lineas).")<br />";
+    echo "procesar archivo estado de cuenta inmueble (".count($lineas).")<br />";
+}
 foreach ($lineas as $linea) {
 
 
@@ -323,17 +353,17 @@ foreach ($lineas as $linea) {
             die($r['stats']['errno'] . "<br />" . $r['stats']['error'] . '<br/>' . $r['query']);
         }
     }
-}// </editor-fold>
+}
 
-// <editor-fold defaultstate="collapsed" desc="graficos">
 
-// <editor-fold defaultstate="collapsed" desc="facturacion mensual">
 if (GRAFICO_FACTURACION == 1) {
     $archivo = ACTUALIZ . "FACTURACION_MENSUAL.txt";
     $contenidoFichero = JFile::read($archivo);
     $lineas = explode("\r\n", $contenidoFichero);
-    echo "procesar archivo grafico facturacion mensual (" . count($lineas) . ")<br />";
-    $mensaje.="procesar archivo grafico facturación mensual (" . count($lineas) . ")<br />";
+    if (!MOROSO) {
+        $mensaje.="procesar archivo grafico facturación mensual (" . count($lineas) . ")<br />";
+        echo "procesar archivo grafico facturacion mensual (" . count($lineas) . ")<br />";
+    }
     foreach ($lineas as $linea) {
         $registro = explode("\t", $linea);
 
@@ -353,15 +383,16 @@ if (GRAFICO_FACTURACION == 1) {
         }
     }
 }
-// </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="cobranza mensual">
+
 if (GRAFICO_COBRANZA == 1) {
     $archivo = ACTUALIZ . "COBRANZA_MENSUAL.txt";
     $contenidoFichero = JFile::read($archivo);
     $lineas = explode("\r\n", $contenidoFichero);
-    echo "procesar archivo grafico cobranza mensual (" . count($lineas) . ")<br />";
-    $mensaje.="procesar archivo grafico facturación mensual (" . count($lineas) . ")<br />";
+    if (!MOROSO) {
+        $mensaje.="procesar archivo grafico facturación mensual (" . count($lineas) . ")<br />";
+        echo "procesar archivo grafico cobranza mensual (" . count($lineas) . ")<br />";
+    }
     foreach ($lineas as $linea) {
         $registro = explode("\t", $linea);
 
@@ -381,162 +412,176 @@ if (GRAFICO_COBRANZA == 1) {
         }
     }
 }
-// </editor-fold>
-
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="grupos">
-if (GRUPOS == 1) {
-    $archivo = ACTUALIZ . "GRUPO.txt";
-    $contenidoFichero = JFile::read($archivo);
-    $lineas = explode("\r\n", $contenidoFichero);
-    echo "procesar archivo grupo (" . count($lineas) . ")<br />";
-    $mensaje.="procesar archivo grupo (" . count($lineas) . ")<br />";
-    foreach ($lineas as $linea) {
-        $registro = explode("\t", $linea);
-
-        if ($registro[0] != "") {
-
-            $registro = Array(
-                "id" => $registro[0],
-                "id_inmueble" => $registro[1],
-                "descripcion" => $registro[2]
-            );
-
-            $r = $inmueble->insertarGrupo($registro);
-
-            if ($r["suceed"] == FALSE) {
-                echo($r['stats']['errno'] . "<br />" . $r['stats']['error'] . '<br/>' . $r['query']);
-            }
-        }
-    }
 
 
-    $archivo = ACTUALIZ . "GRUPO_PROPIETARIO.txt";
-    $contenidoFichero = JFile::read($archivo);
-    $lineas = explode("\r\n", $contenidoFichero);
-    echo "procesar archivo grupo propietario (" . count($lineas) . ")<br />";
-    $mensaje.="procesar archivo grupo propietario (" . count($lineas) . ")<br />";
-    foreach ($lineas as $linea) {
-        $registro = explode("\t", $linea);
+// if (GRUPOS == 1) {
+//     $archivo = ACTUALIZ . "GRUPO.txt";
+//     $contenidoFichero = JFile::read($archivo);
+//     $lineas = explode("\r\n", $contenidoFichero);
+//     if (!MOROSO) {
+//         echo "procesar archivo grupo (" . count($lineas) . ")<br />";
+//         $mensaje.="procesar archivo grupo (" . count($lineas) . ")<br />";
+//     }
+//     foreach ($lineas as $linea) {
+//         $registro = explode("\t", $linea);
 
-        if ($registro[0] != "") {
+//         if ($registro[0] != "") {
 
-            $registro = Array(
-                "id_grupo" => $registro[0],
-                "id_inmueble" => $registro[1],
-                "apto" => $registro[2]
-            );
+//             $registro = Array(
+//                 "id" => $registro[0],
+//                 "id_inmueble" => $registro[1],
+//                 "descripcion" => $registro[2]
+//             );
 
-            $r = $inmueble->insertarGrupoPropietario($registro);
+//             $r = $inmueble->insertarGrupo($registro);
 
-            if ($r["suceed"] == FALSE) {
-                echo($r['stats']['errno'] . "<br />" . $r['stats']['error'] . '<br/>' . $r['query']);
-            }
-        }
-    }
-}
-// </editor-fold>
+//             if ($r["suceed"] == FALSE) {
+//                 echo($r['stats']['errno'] . "<br />" . $r['stats']['error'] . '<br/>' . $r['query']);
+//             }
+//         }
+//     }
 
-// <editor-fold defaultstate="collapsed" desc="movimiento cuentas de fondo">
-if (MOVIMIENTO_FONDO == 1) {
-    $fondo = new fondo();
-    $archivo = ACTUALIZ . ARCHIVO_CUENTAS_DE_FONDO;
-    $contenidoFichero = JFile::read($archivo);
-    $lineas = explode("\r\n", $contenidoFichero);
-    echo "procesar archivo cuentas de fondo (" .count($lineas).")<br/>";
-    $mensaje.="procesar archivo cuentas de fondo (".count($lineas).")<br/>";
-    foreach ($lineas as $linea) {
-       $registro = explode("\t",$linea);
-       if ($registro[0]!="") {
-            $registro = Array(
-               "id_inmueble"    =>  $registro[0],
-               "codigo_gasto"   =>  $registro[1],
-               "descripcion"    =>  utf8_encode($registro[2]),
-               "saldo"          =>  $registro[3],
-               "mostrar"        =>  1
-            );
-            $r = $fondo->insertarRegistroFondo($registro,
-                    Array(
-                        "saldo"         => $registro["saldo"],
-                        "descripcion"   => $registro["descripcion"])
-                    );
-       }
-    }
-    $archivo = ACTUALIZ . ARCHIVO_MOVIMIENTOS_DE_FONDO;
-    $contenidoFichero = JFile::read($archivo);
-    $lineas = explode("\r\n", $contenidoFichero);
-    echo "procesar archivo movimiento de fondo (" .count($lineas).")<br/>";
-    $mensaje.="procesar archivo movimiento de fondo (".count($lineas).")<br/>";
-    $id_inmueble = "";
-    $codigo_gasto = "";
-    foreach ($lineas as $l) {
+
+//     $archivo = ACTUALIZ . "GRUPO_PROPIETARIO.txt";
+//     $contenidoFichero = JFile::read($archivo);
+//     $lineas = explode("\r\n", $contenidoFichero);
+//     if (!MOROSO) {
+//         echo "procesar archivo grupo propietario (" . count($lineas) . ")<br />";
+//         $mensaje.="procesar archivo grupo propietario (" . count($lineas) . ")<br />";
+//     }
+//     foreach ($lineas as $linea) {
+//         $registro = explode("\t", $linea);
+
+//         if ($registro[0] != "") {
+
+//             $registro = Array(
+//                 "id_grupo" => $registro[0],
+//                 "id_inmueble" => $registro[1],
+//                 "apto" => $registro[2]
+//             );
+
+//             $r = $inmueble->insertarGrupoPropietario($registro);
+
+//             if ($r["suceed"] == FALSE) {
+//                 echo($r['stats']['errno'] . "<br />" . $r['stats']['error'] . '<br/>' . $r['query']);
+//             }
+//         }
+//     }
+// }
+
+
+
+// if (MOVIMIENTO_FONDO == 1) {
+//     $fondo = new fondo();
+//     $archivo = ACTUALIZ . ARCHIVO_CUENTAS_DE_FONDO;
+//     $contenidoFichero = JFile::read($archivo);
+//     $lineas = explode("\r\n", $contenidoFichero);
+//     if (!MOROSO) {
+//         echo "procesar archivo cuentas de fondo (" .count($lineas).")<br/>";
+//         $mensaje.="procesar archivo cuentas de fondo (".count($lineas).")<br/>";
+//     }
+//     foreach ($lineas as $linea) {
+//        $registro = explode("\t",$linea);
+//        if ($registro[0]!="") {
+//             $registro = Array(
+//                "id_inmueble"    =>  $registro[0],
+//                "codigo_gasto"   =>  $registro[1],
+//                "descripcion"    =>  utf8_encode($registro[2]),
+//                "saldo"          =>  $registro[3],
+//                "mostrar"        =>  1
+//             );
+//             $r = $fondo->insertarRegistroFondo($registro,
+//                     Array(
+//                         "saldo"         => $registro["saldo"],
+//                         "descripcion"   => $registro["descripcion"])
+//                     );
+//        }
+//     }
+//     $archivo = ACTUALIZ . ARCHIVO_MOVIMIENTOS_DE_FONDO;
+//     $contenidoFichero = JFile::read($archivo);
+//     $lineas = explode("\r\n", $contenidoFichero);
+//     if (!MOROSO) {
+//         echo "procesar archivo movimiento de fondo (" .count($lineas).")<br/>";
+//         $mensaje.="procesar archivo movimiento de fondo (".count($lineas).")<br/>";
+//     }
+//     $id_inmueble = "";
+//     $codigo_gasto = "";
+//     foreach ($lineas as $l) {
         
-        $movimiento = explode("\t",$l);
+//         $movimiento = explode("\t",$l);
         
-        if ($movimiento[0]!="") {
+//         if ($movimiento[0]!="") {
             
-            if ($id_inmueble != $movimiento[0] || $codigo_gasto != $movimiento[1]) {
-                $id_inmueble = $movimiento[0];
-                $codigo_gasto = $movimiento[1];
-                $r = $fondo->obtenerIdCuentaFondo($id_inmueble, $codigo_gasto);
-                if ($r['suceed'] && count($r['data'])>0) {
-                    $id = $r['data'][0]['id'];
-                } else {
-                    $id = 0;
-                }
-            }
+//             if ($id_inmueble != $movimiento[0] || $codigo_gasto != $movimiento[1]) {
+//                 $id_inmueble = $movimiento[0];
+//                 $codigo_gasto = $movimiento[1];
+//                 $r = $fondo->obtenerIdCuentaFondo($id_inmueble, $codigo_gasto);
+//                 if ($r['suceed'] && count($r['data'])>0) {
+//                     $id = $r['data'][0]['id'];
+//                 } else {
+//                     $id = 0;
+//                 }
+//             }
             
-            if ($id > 0) {
-                $registro = Array(
-                    "id_fondo"      => $id,
-                    "fecha"         => $movimiento[2],
-                    "tipo"          => $movimiento[3],
-                    "concepto"      => utf8_encode($movimiento[4]),
-                    "debe"          => $movimiento[5],
-                    "haber"         => $movimiento[6]
-                );
+//             if ($id > 0) {
+//                 $registro = Array(
+//                     "id_fondo"      => $id,
+//                     "fecha"         => $movimiento[2],
+//                     "tipo"          => $movimiento[3],
+//                     "concepto"      => utf8_encode($movimiento[4]),
+//                     "debe"          => $movimiento[5],
+//                     "haber"         => $movimiento[6]
+//                 );
 
-                $r = $fondo->insertarMovimiento($registro);
-                if ($r["suceed"] == FALSE) {
-                    echo($r['stats']['errno'] . "<br />" . $r['stats']['error'] . '<br/>' . $r['query']);
-                }
-            }
-        }
+//                 $r = $fondo->insertarMovimiento($registro);
+//                 if ($r["suceed"] == FALSE) {
+//                     echo($r['stats']['errno'] . "<br />" . $r['stats']['error'] . '<br/>' . $r['query']);
+//                 }
+//             }
+//         }
 
-    }
+//     }
     
-}// </editor-fold>
+// }
 
-// <editor-fold defaultstate="collapsed" desc="cancelacion de gastos">
-$archivo = ACTUALIZ . "CANCELACION_GASTOS.txt";
-if (file_exists($archivo)) {
-    $contenidoFichero = JFile::read($archivo);
-    $lineas = explode("\r\n", $contenidoFichero);
-    echo "procesar archivo cancelacion de gastos (".count($lineas).")<br />";
-    $mensaje.="procesar archivo cancelacion de gastos (".count($lineas).")<br />";
-    $pago = new pago();
-    foreach ($lineas as $linea) {
-        $registro = explode("\t", $linea);
-        if ($registro[0] != "") {
-            $registro = Array(
-                "fecha_movimiento" => $registro[0],
-                "monto" => $registro[1],
-                "descripcion" => utf8_encode($registro[2]),
-                "id_inmueble" => $registro[3],
-                "id_apto" => $registro[4],
-                "periodo" => $registro[5],
-                "numero_factura" => str_replace("\r","",$registro[6])            
-            );
-            $r = $pago->insertarCancelacionDeGastos($registro);
-            if ($r["suceed"] == FALSE) {
-                die($r['stats']['errno'] . "<br />" . $r['stats']['error'] . '<br/>' . $r['query']);
-            }
-        }
-    }
+// $archivo = ACTUALIZ . "CANCELACION_GASTOS.txt";
+// if (file_exists($archivo)) {
+//     $contenidoFichero = JFile::read($archivo);
+//     $lineas = explode("\r\n", $contenidoFichero);
+//     if (!MOROSO) {
+//         echo "procesar archivo cancelacion de gastos (".count($lineas).")<br />";
+//         $mensaje.="procesar archivo cancelacion de gastos (".count($lineas).")<br />";
+//     }
+//     $pago = new pago();
+//     foreach ($lineas as $linea) {
+//         $registro = explode("\t", $linea);
+//         if ($registro[0] != "") {
+//             $registro = Array(
+//                 "fecha_movimiento" => $registro[0],
+//                 "monto" => $registro[1],
+//                 "descripcion" => utf8_encode($registro[2]),
+//                 "id_inmueble" => $registro[3],
+//                 "id_apto" => $registro[4],
+//                 "periodo" => $registro[5],
+//                 "numero_factura" => str_replace("\r","",$registro[6])            
+//             );
+//             $r = $pago->insertarCancelacionDeGastos($registro);
+//             if ($r["suceed"] == FALSE) {
+//                 die($r['stats']['errno'] . "<br />" . $r['stats']['error'] . '<br/>' . $r['query']);
+//             }
+//         }
+//     }
+// }
+
+
+if (MOROSO) {
+    $mensaje = 'Estimado cliente, a la presenta fecha presenta '.RECIBOS_PENDIENTES.
+            ' recibo(s) pendiente(s) de pago, por un monto de $.'.DEUDA.
+            '<br>Si ya efectuó el pago correspondiente por favor enviar los datos '
+            . 'del mismo, vía Whatsapp al 0424-9569266 o al correo electronico '
+            . 'info@administracion-condominio.com.ve para actualizar nuestros registros.<br>';
+    echo $mensaje;
 }
-// </editor-fold>
-
 $fecha = JFILE::read(ACTUALIZ."ACTUALIZACION.txt");
 echo "****FIN DEL PROCESO DE ACTUALIZACION****<br />";
 echo "Fecha: ".$fecha."<br/>";
