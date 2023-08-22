@@ -578,7 +578,7 @@ if (MOROSO) {
     $mensaje = 'Estimado cliente, a la presenta fecha presenta '.RECIBOS_PENDIENTES.
             ' recibo(s) pendiente(s) de pago, por un monto de $.'.DEUDA.
             '<br>Si ya efectuó el pago correspondiente por favor enviar los datos '
-            . 'del mismo, vía Whatsapp al 0424-9569266 o al correo electronico '
+            . 'del mismo, vía Whatsapp al 0416-2021482 o al correo electronico '
             . 'info@administracion-condominio.com.ve para actualizar nuestros registros.<br>';
     echo $mensaje;
 }
